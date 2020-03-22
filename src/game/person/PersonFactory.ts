@@ -1,7 +1,7 @@
 import Person from "./Person";
-import Point from "./Point";
-import Randomizer from "./Randomizer";
-import Size from "./Size";
+import Point from "../element/Point";
+import Randomizer from "../random/Randomizer";
+import Size from "../element/Size";
 
 export default class PersonFactory {
     random(randomizer: Randomizer, fieldSize: Size, image: HTMLImageElement, speed: number): Person {

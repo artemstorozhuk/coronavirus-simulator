@@ -1,7 +1,7 @@
 import Drawer from "./Drawer";
-import Size from "./Size";
+import Size from "../element/Size";
 
-export default class CleanTicker implements Drawer {
+export default class CanvasCleaner implements Drawer {
 
     private readonly size: Size;
 

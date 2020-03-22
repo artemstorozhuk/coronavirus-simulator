@@ -1,5 +1,5 @@
-import Drawer from "./Drawer";
-import Ticker from "./Ticker";
+import Drawer from "./draw/Drawer";
+import Ticker from "./tick/Ticker";
 
 export default class Game {
 

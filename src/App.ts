@@ -1,11 +1,11 @@
-import Game from "./Game";
-import CanvasFactory from "./CanvasFactory";
-import CleanTicker from "./CleanTicker";
-import ImageFactory from "./ImageFactory";
-import PersonElement from "./PersonElement";
-import PersonFactory from "./PersonFactory";
-import Randomizer from "./Randomizer";
-import Size from "./Size";
+import Game from "./game/Game";
+import CanvasFactory from "./ui/CanvasFactory";
+import CanvasCleaner from "./game/draw/CanvasClearer";
+import ImageFactory from "./ui/ImageFactory";
+import PersonDrawer from "./game/draw/PersonDrawer";
+import PersonFactory from "./game/person/PersonFactory";
+import Randomizer from "./game/random/Randomizer";
+import Size from "./game/element/Size";
 
 class App {
     start() {
@@ -21,11 +21,11 @@ class App {
         const imageFactory = new ImageFactory();
 
         const person = personFactory.random(randomizer, fieldSize, imageFactory.happy(), speed);
-        const personElement = new PersonElement(person, fieldSize, imageSize);
+        const personDrawer = new PersonDrawer(person, fieldSize, imageSize);
 
         const game = new Game(canvas.getContext("2d"),
-            [personElement],
-            [new CleanTicker(canvasSize), personElement],
+            [personDrawer],
+            [new CanvasCleaner(canvasSize), personDrawer],
             tickerInterval);
         game.start();
     }

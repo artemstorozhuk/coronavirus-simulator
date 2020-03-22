@@ -1,5 +1,5 @@
-import Point from "./Point";
-import Size from "./Size";
+import Point from "../element/Point";
+import Size from "../element/Size";
 
 export default class Person {
     private readonly position: Point;
