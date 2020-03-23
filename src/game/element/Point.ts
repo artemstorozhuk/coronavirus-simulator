@@ -25,11 +25,11 @@ export default class Point {
             position.isEdgeY(size) ? -this.y : this.y);
     }
 
-    isEdgeX(size: Size): boolean {
+    private isEdgeX(size: Size): boolean {
         return this.x == 0 || this.x == size.width;
     }
 
-    isEdgeY(size: Size): boolean {
+    private isEdgeY(size: Size): boolean {
         return this.y == 0 || this.y == size.height;
     }
 

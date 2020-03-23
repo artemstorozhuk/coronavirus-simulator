@@ -6,7 +6,7 @@ export default class Game {
     private readonly context: CanvasRenderingContext2D;
     private readonly tickers: Array<Ticker>;
     private readonly drawers: Array<Drawer>;
-    private tickInterval: number;
+    private readonly tickInterval: number;
     private intervalTickId: number = 0;
 
     constructor(context: CanvasRenderingContext2D,
