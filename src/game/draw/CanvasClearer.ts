@@ -12,4 +12,5 @@ export default class CanvasCleaner implements Drawer {
     draw(context: CanvasRenderingContext2D) {
         context.clearRect(0, 0, this.size.width, this.size.height);
     }
+
 }

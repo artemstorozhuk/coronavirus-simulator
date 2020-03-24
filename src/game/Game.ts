@@ -1,36 +1,26 @@
 import Drawer from "./draw/Drawer";
 import Ticker from "./tick/Ticker";
 
-export default class Game {
+export default class Game implements Ticker {
 
     private readonly context: CanvasRenderingContext2D;
-    private readonly tickers: Array<Ticker>;
-    private readonly drawers: Array<Drawer>;
-    private readonly tickInterval: number;
-    private intervalTickId: number = 0;
+    private readonly ticker: Ticker;
+    private readonly drawer: Drawer;
+    private readonly updateTime: number;
 
-    constructor(context: CanvasRenderingContext2D,
-        tickers: Array<Ticker>,
-        drawers: Array<Drawer>,
-        tickInterval: number) {
+    constructor(context: CanvasRenderingContext2D, ticker: Ticker, drawer: Drawer, updateTime: number) {
         this.context = context;
-        this.tickers = tickers;
-        this.drawers = drawers;
-        this.tickInterval = tickInterval;
-    }
-
-    start() {
-        this.intervalTickId = setInterval(() => this.tick(), this.tickInterval);
-    }
-
-    stop() {
-        clearInterval(this.intervalTickId);
-        this.intervalTickId = 0;
+        this.ticker = ticker;
+        this.drawer = drawer;
+        this.updateTime = updateTime;
     }
 
     tick() {
-        this.tickers.forEach(ticker => ticker.tick());
-        this.drawers.forEach(drawer => drawer.draw(this.context));
+        const now = new Date().getTime();
+        this.ticker.tick();
+        this.drawer.draw(this.context);
+        const delta = new Date().getTime() - now;
+        setTimeout(() => this.tick(), Math.max(0, this.updateTime - delta));
     }
 
 }
