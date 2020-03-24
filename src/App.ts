@@ -6,7 +6,10 @@ import Randomizer from "./game/random/Randomizer";
 import ImageDrawer from "./game/draw/ImageDrawer";
 import CompositeDrawer from "./game/draw/CompositeDrawer";
 import Movable from "./game/tick/Movable";
-import CompositeTicker from "./game/tick/CompositeTicker";
+import CompositeTicker from "./game/tick/CompositeTickable";
+import CompositeTickable from "./game/tick/CompositeTickable";
+import Repeatable from "./game/tick/Repeatable";
+import Drawable from "./game/tick/Drawable";
 
 class App {
     start() {
@@ -14,26 +17,28 @@ class App {
         const imageSize = { width: 10, height: 10 };
         const fieldSize = { width: canvasSize.width - imageSize.width, height: canvasSize.height - imageSize.height };
         const speed = 2;
-        const tickerInterval = 20;
+        const updatePeriod = 20;
         const population = 100;
 
         const canvas = new CanvasFactory().create(canvasSize);
+        const context = canvas.getContext("2d");
         const randomizer = new Randomizer();
         const imageFactory = new ImageFactory();
         const happyImage = imageFactory.loadHappy();
 
-        const tickers = [];
-        const drawers = [];
-        drawers.push(new CanvasCleaner(canvasSize));
+        const tickablesArray = [];
+        const drawersArray = [];
+        drawersArray.push(new CanvasCleaner(canvasSize));
         for (let i = 0; i < population; i++) {
             const point = randomizer.randomPoint(fieldSize);
             const movable = new Movable(point, randomizer.randomDirection(speed), fieldSize);
-            tickers.push(movable);
-            drawers.push(new ImageDrawer(happyImage, point, imageSize))
+            tickablesArray.push(movable);
+            drawersArray.push(new ImageDrawer(happyImage, point, imageSize))
         }
 
-        const game = new Game(canvas.getContext("2d"), new CompositeTicker(tickers), new CompositeDrawer(drawers), tickerInterval);
-        game.tick();
+        tickablesArray.push(new Drawable(context, new CompositeDrawer(drawersArray)));
+        const tickable = new CompositeTickable(tickablesArray);
+        new Repeatable(tickable, updatePeriod).tick();
     }
 }
 

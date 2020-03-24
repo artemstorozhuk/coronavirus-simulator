@@ -1,8 +1,8 @@
 import Point from "../element/Point";
 import Size from "../element/Size";
-import Ticker from "./Ticker";
+import Tickable from "./Tickable";
 
-export default class Movable implements Ticker {
+export default class Movable implements Tickable {
 
     private readonly point: Point;
     private readonly direction: Point;
