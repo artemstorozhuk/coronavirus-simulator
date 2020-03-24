@@ -1,5 +1,5 @@
 import CanvasFactory from "./ui/CanvasFactory";
-import Randomizer from "./game/random/Randomizer";
+import Random from "./game/random/Random";
 import ImageFactory from "./ui/ImageFactory";
 import CanvasCleaner from "./game/draw/CanvasClearer";
 import Movable from "./game/tick/Movable";
@@ -20,7 +20,7 @@ class App {
 
         const canvas = new CanvasFactory().create(canvasSize);
         const context = canvas.getContext("2d");
-        const randomizer = new Randomizer();
+        const random = new Random();
         const imageFactory = new ImageFactory();
         const happyImage = imageFactory.loadHappy();
 
@@ -28,8 +28,8 @@ class App {
         const drawersArray = [];
         drawersArray.push(new CanvasCleaner(canvasSize));
         for (let i = 0; i < population; i++) {
-            const point = randomizer.randomPoint(fieldSize);
-            const movable = new Movable(point, randomizer.randomDirection(speed), fieldSize);
+            const point = random.generatePoint(fieldSize);
+            const movable = new Movable(point, random.generateDirection(speed), fieldSize);
             tickablesArray.push(movable);
             drawersArray.push(new ImageDrawer(happyImage, point, imageSize))
         }
