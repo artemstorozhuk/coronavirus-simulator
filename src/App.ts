@@ -1,15 +1,13 @@
-import Game from "./game/Game";
 import CanvasFactory from "./ui/CanvasFactory";
-import CanvasCleaner from "./game/draw/CanvasClearer";
-import ImageFactory from "./ui/ImageFactory";
 import Randomizer from "./game/random/Randomizer";
-import ImageDrawer from "./game/draw/ImageDrawer";
-import CompositeDrawer from "./game/draw/CompositeDrawer";
+import ImageFactory from "./ui/ImageFactory";
+import CanvasCleaner from "./game/draw/CanvasClearer";
 import Movable from "./game/tick/Movable";
-import CompositeTicker from "./game/tick/CompositeTickable";
+import ImageDrawer from "./game/draw/ImageDrawer";
 import CompositeTickable from "./game/tick/CompositeTickable";
-import Repeatable from "./game/tick/Repeatable";
+import CompositeDrawer from "./game/draw/CompositeDrawer";
 import Drawable from "./game/tick/Drawable";
+import Repeatable from "./game/tick/Repeatable";
 
 class App {
     start() {
