@@ -1,4 +1,4 @@
-import InfectableFactory from './InfectableFactory';
+import InfectableFactory from './infectable/factory/InfectableFactory';
 import Organism from './organism/Organism';
 import Population from './population/Population';
 

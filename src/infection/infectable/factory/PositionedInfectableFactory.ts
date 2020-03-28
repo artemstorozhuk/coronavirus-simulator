@@ -1,12 +1,12 @@
-import CompositeInfectable from './infectable/CompositeInfectable';
-import EveryInfectable from './infectable/EveryInfectable';
-import FilteredInfectable from './infectable/FilteredInfectable';
-import Infectable from './infectable/Infectable';
+import CompositeInfectable from '../CompositeInfectable';
+import EveryInfectable from '../EveryInfectable';
+import FilteredInfectable from '../FilteredInfectable';
+import Infectable from '../Infectable';
 import InfectableFactory from './InfectableFactory';
-import DistanceOrganismFilter from './organism/position/DistanceOrganismFilter';
-import PositionedOrganism from './organism/position/PositionedOrganism';
-import Population from './population/Population';
-import PopulationFilter from './population/PopulationFilter';
+import DistanceOrganismFilter from '../../organism/position/DistanceOrganismFilter';
+import PositionedOrganism from '../../organism/position/PositionedOrganism';
+import Population from '../../population/Population';
+import PopulationFilter from '../../population/PopulationFilter';
 
 export default class PositionedInfectableFactory implements InfectableFactory<PositionedOrganism> {
 

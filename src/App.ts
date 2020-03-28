@@ -7,7 +7,7 @@ import Infection from './infection/Infection';
 import PositionedOrganism from './infection/organism/position/PositionedOrganism';
 import SimpleOrganism from './infection/organism/SimpleOrganism';
 import Population from './infection/population/Population';
-import PositionedInfectableFactory from './infection/PositionedInfectableFactory';
+import PositionedInfectableFactory from './infection/infectable/factory/PositionedInfectableFactory';
 import Random from './random/Random';
 import CompositeTickable from './tick/CompositeTickable';
 import Drawable from './tick/Drawable';
