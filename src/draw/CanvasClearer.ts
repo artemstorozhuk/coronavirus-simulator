@@ -1,5 +1,5 @@
-import Drawer from "./Drawer";
-import Size from "../element/Size";
+import Size from '../element/Size';
+import Drawer from './Drawer';
 
 export default class CanvasCleaner implements Drawer {
 

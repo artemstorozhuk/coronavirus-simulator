@@ -1,43 +1,78 @@
-import CanvasFactory from "./ui/CanvasFactory";
-import Random from "./game/random/Random";
-import ImageFactory from "./ui/ImageFactory";
-import CanvasCleaner from "./game/draw/CanvasClearer";
-import Movable from "./game/tick/Movable";
-import ImageDrawer from "./game/draw/ImageDrawer";
-import CompositeTickable from "./game/tick/CompositeTickable";
-import CompositeDrawer from "./game/draw/CompositeDrawer";
-import Drawable from "./game/tick/Drawable";
-import Repeatable from "./game/tick/Repeatable";
+import CanvasCleaner from './draw/CanvasClearer';
+import CompositeDrawer from './draw/CompositeDrawer';
+import Drawer from './draw/Drawer';
+import ImageDrawer from './draw/ImageDrawer';
+import OrganismDrawer from './draw/OrganismDrawer';
+import Infection from './infection/Infection';
+import PositionedOrganism from './infection/organism/position/PositionedOrganism';
+import SimpleOrganism from './infection/organism/SimpleOrganism';
+import Population from './infection/population/Population';
+import PositionedInfectableFactory from './infection/PositionedInfectableFactory';
+import Random from './random/Random';
+import CompositeTickable from './tick/CompositeTickable';
+import Drawable from './tick/Drawable';
+import InfectionOutbreakable from './tick/InfectionOutbreakable';
+import Movable from './tick/Movable';
+import Repeatable from './tick/Repeatable';
+import Tickable from './tick/Tickable';
+import CanvasFactory from './ui/CanvasFactory';
+import ImageFactory from './ui/ImageFactory';
 
 class App {
     start() {
         const canvasSize = { width: 640, height: 480 };
-        const imageSize = { width: 10, height: 10 };
+        const size = 10;
+        const imageSize = { width: size, height: size };
+        const sizeSq = size * size;
         const fieldSize = { width: canvasSize.width - imageSize.width, height: canvasSize.height - imageSize.height };
-        const speed = 2;
+        const speed = 1;
         const updatePeriod = 20;
-        const population = 100;
+        const populationSize = 100;
 
-        const canvas = new CanvasFactory().create(canvasSize);
+        const canvasFactory = new CanvasFactory();
+        const canvas = canvasFactory.create(canvasSize);
         const context = canvas.getContext("2d");
-        const random = new Random();
-        const imageFactory = new ImageFactory();
-        const happyImage = imageFactory.loadHappy();
 
-        const tickablesArray = [];
-        const drawersArray = [];
+        const random = new Random();
+
+        const imageFactory = new ImageFactory();
+        const happyImage = imageFactory.happy();
+        const infectedImage = imageFactory.infected();
+
+        const tickablesArray = new Array<Tickable>();
+
+        const organismArray = new Array<PositionedOrganism>();
+
+        const drawersArray = new Array<Drawer>();
         drawersArray.push(new CanvasCleaner(canvasSize));
-        for (let i = 0; i < population; i++) {
+
+        for (let i = 0; i < populationSize; i++) {
             const point = random.generatePoint(fieldSize);
+
             const movable = new Movable(point, random.generateDirection(speed), fieldSize);
             tickablesArray.push(movable);
-            drawersArray.push(new ImageDrawer(happyImage, point, imageSize))
+
+            const organism = new SimpleOrganism(i == 0);
+            const normalDrawer = new ImageDrawer(happyImage, point, imageSize);
+            const infectedDrawer = new ImageDrawer(infectedImage, point, imageSize);
+
+            drawersArray.push(new OrganismDrawer(organism, normalDrawer, infectedDrawer));
+
+            organismArray.push(new PositionedOrganism(organism, point));
         }
 
+        const population = new Population<PositionedOrganism>(organismArray);
+        const factory = new PositionedInfectableFactory(sizeSq);
+        const infection = new Infection<PositionedOrganism>(population, factory);
+        tickablesArray.push(new InfectionOutbreakable(infection));
+
         tickablesArray.push(new Drawable(context, new CompositeDrawer(drawersArray)));
+
         const tickable = new CompositeTickable(tickablesArray);
-        new Repeatable(tickable, updatePeriod).tick();
+        const repeatable = new Repeatable(tickable, updatePeriod);
+        repeatable.tick();
     }
 }
 
-new App().start();
+const app = new App();
+app.start();

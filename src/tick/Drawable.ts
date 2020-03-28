@@ -1,5 +1,5 @@
-import Drawer from "../draw/Drawer";
-import Tickable from "./Tickable";
+import Drawer from '../draw/Drawer';
+import Tickable from './Tickable';
 
 export default class Drawable implements Tickable {
 

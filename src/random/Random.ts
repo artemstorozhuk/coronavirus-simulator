@@ -1,4 +1,4 @@
-import Size from "../element/Size";
+import Size from '../element/Size';
 
 export default class Random {
 

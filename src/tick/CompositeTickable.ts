@@ -1,4 +1,4 @@
-import Tickable from "./Tickable";
+import Tickable from './Tickable';
 
 export default class CompositeTickable implements Tickable {
 

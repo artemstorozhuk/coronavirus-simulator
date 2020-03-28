@@ -1,6 +1,6 @@
-import Point from "../element/Point";
-import Size from "../element/Size";
-import Tickable from "./Tickable";
+import Point from '../element/Point';
+import Size from '../element/Size';
+import Tickable from './Tickable';
 
 export default class Movable implements Tickable {
 

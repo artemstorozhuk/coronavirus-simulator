@@ -1,4 +1,4 @@
-import Tickable from "./Tickable";
+import Tickable from './Tickable';
 
 export default class Repeatable implements Tickable {
 
@@ -14,7 +14,8 @@ export default class Repeatable implements Tickable {
         const now = new Date().getTime();
         this.tickable.tick();
         const delta = new Date().getTime() - now;
-        setTimeout(() => this.tick(), Math.max(0, this.repeatPeriod - delta));
+        const timeout = Math.max(0, this.repeatPeriod - delta);
+        setTimeout(() => this.tick(), timeout);
     }
 
 }

@@ -1,10 +1,14 @@
 export default class ImageFactory {
 
-    loadHappy() {
-        return this.load("../resources/happy.png");
+    happy() {
+        return this.image("../resources/happy.png");
     }
 
-    load(src: string) {
+    infected() {
+        return this.image("../resources/infected.png");
+    }
+
+    private image(src: string) {
         const image = new Image();
         image.src = src;
         return image;
