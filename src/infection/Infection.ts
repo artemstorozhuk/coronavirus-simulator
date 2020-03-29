@@ -1,23 +1,21 @@
-import InfectableFactory from './infectable/factory/InfectableFactory';
+import InfectableCreator from './infectable/creator/InfectableCreator';
 import Organism from './organism/Organism';
 import Population from './population/Population';
 
 export default class Infection<O extends Organism> {
 
     private readonly population: Population<O>;
-    private readonly infectableFactory: InfectableFactory<O>;
+    private readonly infectableCreator: InfectableCreator<O>;
 
-    constructor(population: Population<O>, infectableFactory: InfectableFactory<O>) {
+    constructor(population: Population<O>, infectableCreator: InfectableCreator<O>) {
         this.population = population;
-        this.infectableFactory = infectableFactory;
+        this.infectableCreator = infectableCreator;
     }
 
-    outbreak() {
-        const infectedOrganisms = this.population.organisms()
-            .filter(o => o.isInfected());
-        const infectedPopulation = new Population<O>(infectedOrganisms);
-        const infectable = this.infectableFactory.create(infectedPopulation);
-        infectable.infect(this.population);
+    spread() {
+        this.infectableCreator
+            .create(this.population)
+            .infect(this.population);
     }
 
 }

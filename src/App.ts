@@ -3,15 +3,16 @@ import CompositeDrawer from './draw/CompositeDrawer';
 import Drawer from './draw/Drawer';
 import ImageDrawer from './draw/ImageDrawer';
 import OrganismDrawer from './draw/OrganismDrawer';
+import DistanceSpreadableCreator from './infection/infectable/creator/DistanceSpreadableCreator';
+import OnlyInfectedCreator from './infection/infectable/creator/OnlyInfectedCreator';
 import Infection from './infection/Infection';
 import PositionedOrganism from './infection/organism/position/PositionedOrganism';
 import SimpleOrganism from './infection/organism/SimpleOrganism';
 import Population from './infection/population/Population';
-import PositionedInfectableFactory from './infection/infectable/factory/PositionedInfectableFactory';
 import Random from './random/Random';
 import CompositeTickable from './tick/CompositeTickable';
 import Drawable from './tick/Drawable';
-import InfectionOutbreakable from './tick/InfectionOutbreakable';
+import InfectionSpreadable from './tick/InfectionSpreadable';
 import Movable from './tick/Movable';
 import Repeatable from './tick/Repeatable';
 import Tickable from './tick/Tickable';
@@ -62,9 +63,10 @@ class App {
         }
 
         const population = new Population<PositionedOrganism>(organismArray);
-        const factory = new PositionedInfectableFactory(sizeSq);
-        const infection = new Infection<PositionedOrganism>(population, factory);
-        tickablesArray.push(new InfectionOutbreakable(infection));
+        const creator = new OnlyInfectedCreator<PositionedOrganism>(new DistanceSpreadableCreator(sizeSq));
+        const infection = new Infection<PositionedOrganism>(population, creator);
+
+        tickablesArray.push(new InfectionSpreadable<PositionedOrganism>(infection));
 
         tickablesArray.push(new Drawable(context, new CompositeDrawer(drawersArray)));
 

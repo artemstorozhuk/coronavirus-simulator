@@ -2,7 +2,7 @@ import Infection from '../infection/Infection';
 import Organism from '../infection/organism/Organism';
 import Tickable from './Tickable';
 
-export default class InfectionOutbreakable<O extends Organism> implements Tickable {
+export default class InfectionSpreadable<O extends Organism> implements Tickable {
 
     private readonly infection: Infection<O>;
 
@@ -11,7 +11,7 @@ export default class InfectionOutbreakable<O extends Organism> implements Tickab
     }
 
     tick() {
-        this.infection.outbreak();
+        this.infection.spread();
     }
 
 }

@@ -1,14 +1,14 @@
-import CompositeInfectable from '../CompositeInfectable';
-import EveryInfectable from '../EveryInfectable';
-import FilteredInfectable from '../FilteredInfectable';
-import Infectable from '../Infectable';
-import InfectableFactory from './InfectableFactory';
 import DistanceOrganismFilter from '../../organism/position/DistanceOrganismFilter';
 import PositionedOrganism from '../../organism/position/PositionedOrganism';
 import Population from '../../population/Population';
 import PopulationFilter from '../../population/PopulationFilter';
+import CompositeInfectable from '../CompositeInfectable';
+import EveryInfectable from '../EveryInfectable';
+import FilteredInfectable from '../FilteredInfectable';
+import Infectable from '../Infectable';
+import InfectableCreator from './InfectableCreator';
 
-export default class PositionedInfectableFactory implements InfectableFactory<PositionedOrganism> {
+export default class DistanceSpreadableCreator implements InfectableCreator<PositionedOrganism> {
 
     private readonly everyInfectable = new EveryInfectable<PositionedOrganism>();
     private readonly distance: number;
