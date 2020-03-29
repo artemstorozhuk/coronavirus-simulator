@@ -35,12 +35,12 @@ class App {
     private readonly infectedImage = this.imageFactory.infected();
 
     private readonly gameSize: Size;
+    private readonly gameRectangle: Rectangle;
 
     private readonly canvasPoint: Point;
     private readonly canvasSize: Size;
     private readonly canvasRectangle: Rectangle;
 
-    private readonly fieldSize: Size;
     private readonly fieldRectangle: Rectangle;
 
     private readonly size: number;
@@ -48,17 +48,23 @@ class App {
 
     private readonly speed: number;
     private readonly updatePeriod: number;
-    private readonly populationSize: number;
 
     private readonly tickablesArray = new Array<Tickable>();
-    private readonly organismArray = new Array<PositionedOrganism>();
     private readonly drawersArray = new Array<Drawer>();
+
+    private readonly organismArray = new Array<PositionedOrganism>();
+    private readonly organismDrawersArray = new Array<Drawer>();
+    private readonly organismTickablesArray = new Array<Tickable>();
 
     constructor() {
         this.gameSize = {
             width: configuration.gameWidth,
             height: configuration.gameHeight
         };
+        this.gameRectangle = new Rectangle({
+            x: 0,
+            y: 0
+        }, this.gameSize);
 
         this.canvasPoint = {
             x: configuration.canvasX,
@@ -76,27 +82,48 @@ class App {
             height: this.size
         };
 
-        this.fieldSize = {
+        const fieldSize = {
             width: this.canvasSize.width - this.imageSize.width,
             height: this.canvasSize.height - this.imageSize.height
         };
-        this.fieldRectangle = new Rectangle(this.canvasPoint, this.fieldSize);
+        this.fieldRectangle = new Rectangle(this.canvasPoint, fieldSize);
 
         this.speed = configuration.speed;
         this.updatePeriod = configuration.updatePeriod;
-        this.populationSize = configuration.population;
     }
 
     start() {
         const canvasFactory = new CanvasFactory();
         const canvas = canvasFactory.create(this.gameSize);
         const context = canvas.getContext("2d");
+        context.font = "20px Arial";
+        const corner = this.canvasRectangle.corner();
 
-        this.drawersArray.push(new CanvasCleaner(this.canvasRectangle));
+        this.drawersArray.push(new CanvasCleaner(this.gameRectangle));
         this.drawersArray.push(new RectangleDrawer(this.canvasRectangle));
 
-        this.addInfectedButton(canvas);
-        this.addNormalButton(canvas);
+        this.addButton(canvas, new Button(context, "Add infected", {
+            x: configuration.padding,
+            y: corner.y + configuration.padding
+        }), () => {
+            this.addOrganism(new SimpleOrganism(true));
+        });
+
+        this.addButton(canvas, new Button(context, "Add normal", {
+            x: configuration.padding + 150,
+            y: corner.y + configuration.padding
+        }), () => {
+            this.addOrganism(new SimpleOrganism());
+        });
+
+        this.addButton(canvas, new Button(context, "Reset", {
+            x: configuration.padding + 300,
+            y: corner.y + configuration.padding
+        }), () => {
+            this.organismArray.splice(0, this.organismArray.length);
+            this.organismDrawersArray.splice(0, this.organismDrawersArray.length);
+            this.organismTickablesArray.splice(0, this.organismTickablesArray.length);
+        });
 
         const population = new Population<PositionedOrganism>(this.organismArray);
         const creator = new OnlyInfectedCreator<PositionedOrganism>(new DistanceSpreadableCreator(this.size * this.size));
@@ -104,49 +131,33 @@ class App {
 
         this.tickablesArray.push(new InfectionSpreadable<PositionedOrganism>(infection));
 
+        this.drawersArray.push(new CompositeDrawer(this.organismDrawersArray));
+
         this.tickablesArray.push(new Drawable(context, new CompositeDrawer(this.drawersArray)));
+
+        this.tickablesArray.push(new CompositeTickable(this.organismTickablesArray));
 
         const tickable = new CompositeTickable(this.tickablesArray);
         const repeatable = new Repeatable(tickable, this.updatePeriod);
         repeatable.tick();
     }
 
-    private addInfectedButton(canvas: HTMLCanvasElement) {
-        const button = new Button(canvas.getContext("2d"), "Add infected", {
-            x: configuration.padding,
-            y: this.canvasRectangle.corner().y + configuration.padding
-        });
-
+    private addButton(canvas: HTMLCanvasElement, button: Button, event: () => void) {
         this.drawersArray.push(button.drawer());
-        const inside = button.inside(() => {
-            this.addOrganism(new SimpleOrganism(true));
-        });
-        canvas.addEventListener("click", inside);
-    }
-
-    private addNormalButton(canvas: HTMLCanvasElement) {
-        const button = new Button(canvas.getContext("2d"), "Add normal", {
-            x: configuration.padding + 100,
-            y: this.canvasRectangle.corner().y + configuration.padding
-        });
-
-        this.drawersArray.push(button.drawer());
-        const inside = button.inside(() => {
-            this.addOrganism(new SimpleOrganism());
-        });
+        const inside = button.inside(event);
         canvas.addEventListener("click", inside);
     }
 
     private addOrganism(organism: Organism) {
-        const point = this.random.generatePoint(this.fieldSize);
+        const point = this.random.inRectangle(this.fieldRectangle);
 
-        const movable = new Movable(point, this.random.generateDirection(this.speed), this.fieldRectangle);
-        this.tickablesArray.push(movable);
+        const movable = new Movable(point, this.random.direction(this.speed), this.fieldRectangle);
+        this.organismTickablesArray.push(movable);
 
         const normalDrawer = new ImageDrawer(this.happyImage, point, this.imageSize);
         const infectedDrawer = new ImageDrawer(this.infectedImage, point, this.imageSize);
 
-        this.drawersArray.push(new OrganismDrawer(organism, normalDrawer, infectedDrawer));
+        this.organismDrawersArray.push(new OrganismDrawer(organism, normalDrawer, infectedDrawer));
 
         this.organismArray.push(new PositionedOrganism(organism, point));
     }

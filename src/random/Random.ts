@@ -17,8 +17,8 @@ export default class Random {
     inRectangle(rectangle: Rectangle) {
         const corner = rectangle.corner();
         return {
-            x: this.generate(rectangle.point.x, corner.x),
-            y: this.generate(rectangle.point.y, corner.y)
+            x: this.generate(corner.x, rectangle.point.x),
+            y: this.generate(corner.y, rectangle.point.y)
         }
     }
 

@@ -12,8 +12,7 @@ export default class TextDrawer implements Drawer {
     }
 
     draw(context: CanvasRenderingContext2D) {
-        const textMetrics = context.measureText(this.text);
-        context.strokeText(this.text, this.point.x, this.point.y, textMetrics.width);
+        context.fillText(this.text, this.point.x, this.point.y);
     }
 
 }

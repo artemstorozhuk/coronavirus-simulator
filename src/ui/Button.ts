@@ -25,7 +25,7 @@ export default class Button {
         const rectangle = this.rectangle();
         const textDrawer = new TextDrawer(this.text, {
             x: this.point.x + this.padding,
-            y: this.point.y + this.padding
+            y: this.point.y - this.padding + rectangle.size.height
         });
         const rectClearer = new CanvasCleaner(rectangle);
         const rectDrawer = new RectangleDrawer(rectangle);
@@ -52,7 +52,7 @@ export default class Button {
         const height = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent;
         return new Rectangle({
             x: this.point.x,
-            y: this.point.y - height
+            y: this.point.y
         }, {
             width: width + this.padding * 2,
             height: height + this.padding * 2
