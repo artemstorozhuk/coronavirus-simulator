@@ -1,3 +1,4 @@
+import * as configuration from './configuration.json';
 import CanvasCleaner from './draw/CanvasClearer';
 import CompositeDrawer from './draw/CompositeDrawer';
 import Drawer from './draw/Drawer';
@@ -22,14 +23,23 @@ import ImageFactory from './ui/ImageFactory';
 
 class App {
     start() {
-        const canvasSize = { width: 640, height: 480 };
-        const size = 10;
-        const imageSize = { width: size, height: size };
+        const canvasSize = {
+            width: configuration.canvasWidth,
+            height: configuration.canvasHeight
+        };
+        const size = configuration.imageSize;
+        const imageSize = {
+            width: size,
+            height: size
+        };
         const sizeSq = size * size;
-        const fieldSize = { width: canvasSize.width - imageSize.width, height: canvasSize.height - imageSize.height };
-        const speed = 1;
-        const updatePeriod = 20;
-        const populationSize = 100;
+        const fieldSize = {
+            width: canvasSize.width - imageSize.width,
+            height: canvasSize.height - imageSize.height
+        };
+        const speed = configuration.speed;
+        const updatePeriod = configuration.updatePeriod;
+        const populationSize = configuration.population;
 
         const canvasFactory = new CanvasFactory();
         const canvas = canvasFactory.create(canvasSize);
