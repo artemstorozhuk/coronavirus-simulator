@@ -9,7 +9,7 @@ import CompositeTickable from '../tick/CompositeTickable';
 import Drawable from '../tick/Drawable';
 import InfectionSpreadable from '../tick/InfectionSpreadable';
 import Movable from '../tick/Movable';
-import TickableRegistry from '../tick/TickableRegistry';
+import Tickable from '../tick/Tickable';
 import ImageFactory from '../ui/ImageFactory';
 import DistanceSpreadableCreator from './infectable/creator/DistanceSpreadableCreator';
 import OnlyInfectedCreator from './infectable/creator/OnlyInfectedCreator';
@@ -19,7 +19,7 @@ import PositionedOrganism from './organism/position/PositionedOrganism';
 import SimpleOrganism from './organism/SimpleOrganism';
 import Population from './population/Population';
 
-export default class InfectionGame {
+export default class InfectionGame implements Tickable {
 
     private readonly random = new Random();
 
@@ -38,7 +38,9 @@ export default class InfectionGame {
     private readonly organismDrawers = new Array<Drawer>();
     private readonly organismMovables = new Array<Movable>();
 
-    constructor() {
+    private readonly tickable: Tickable;
+
+    constructor(context: CanvasRenderingContext2D) {
         const canvasPoint = {
             x: configuration.canvasX,
             y: configuration.canvasY
@@ -53,17 +55,19 @@ export default class InfectionGame {
             height: canvasSize.height - this.imageSize.height
         };
         this.fieldRectangle = new Rectangle(canvasPoint, fieldSize);
-    }
 
-    init(context: CanvasRenderingContext2D, registry: TickableRegistry) {
         const population = new Population<PositionedOrganism>(this.organisms);
         const infectionDistanceSq = configuration.infectionDistance * configuration.infectionDistance;
         const creator = new OnlyInfectedCreator<PositionedOrganism>(new DistanceSpreadableCreator(infectionDistanceSq));
         const infection = new Infection<PositionedOrganism>(population, creator);
 
-        registry.register(new InfectionSpreadable<PositionedOrganism>(infection));
-        registry.register(new CompositeTickable(this.organismMovables));
-        registry.register(new Drawable(context, new CompositeDrawer(this.organismDrawers)));
+        this.tickable = new CompositeTickable([new InfectionSpreadable<PositionedOrganism>(infection),
+        new CompositeTickable(this.organismMovables),
+        new Drawable(context, new CompositeDrawer(this.organismDrawers))]);
+    }
+
+    tick() {
+        this.tickable.tick();
     }
 
     addInfected() {

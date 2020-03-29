@@ -1,11 +1,11 @@
 import CanvasCleaner from '../draw/CanvasClearer';
 import CompositeDrawer from '../draw/CompositeDrawer';
-import Drawer from '../draw/Drawer';
 import RectangleDrawer from '../draw/RectangleDrawer';
 import TextDrawer from '../draw/TextDrawer';
 import Point from '../geometry/Point';
 import Rectangle from '../geometry/Rectangle';
 import RectanglePointInside from '../geometry/RectanglePointInside';
+import Drawable from '../tick/Drawable';
 
 export default class Button {
 
@@ -21,7 +21,7 @@ export default class Button {
         this.padding = padding;
     }
 
-    drawer(): Drawer {
+    drawable(context: CanvasRenderingContext2D): Drawable {
         const rectangle = this.rectangle();
         const textDrawer = new TextDrawer(this.text, {
             x: this.point.x + this.padding,
@@ -29,7 +29,7 @@ export default class Button {
         });
         const rectClearer = new CanvasCleaner(rectangle);
         const rectDrawer = new RectangleDrawer(rectangle);
-        return new CompositeDrawer([rectClearer, rectDrawer, textDrawer]);
+        return new Drawable(context, new CompositeDrawer([rectClearer, rectDrawer, textDrawer]));
     }
 
     insideEvent(listener: () => void): (event: MouseEvent) => void {
