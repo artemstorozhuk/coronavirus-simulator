@@ -1,5 +1,5 @@
-import Point from '../element/Point';
-import Size from '../element/Size';
+import Point from '../geometry/Point';
+import Size from '../geometry/Size';
 import Drawer from './Drawer';
 
 export default class ImageDrawer implements Drawer {

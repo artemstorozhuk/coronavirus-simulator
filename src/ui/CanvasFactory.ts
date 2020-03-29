@@ -1,4 +1,4 @@
-import Size from '../element/Size';
+import Size from '../geometry/Size';
 
 export default class CanvasFactory {
 

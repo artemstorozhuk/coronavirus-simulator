@@ -1,19 +1,17 @@
-import Point from '../element/Point';
-import Size from '../element/Size';
+import Rectangle from '../geometry/Rectangle';
 import Drawer from './Drawer';
 
 export default class RectangleDrawer implements Drawer {
 
-    private readonly point: Point;
-    private readonly size: Size;
+    private readonly rectangle: Rectangle;
 
-    constructor(point: Point, size: Size) {
-        this.point = point;
-        this.size = size;
+    constructor(rectangle: Rectangle) {
+        this.rectangle = rectangle;
     }
 
     draw(context: CanvasRenderingContext2D) {
-        context.strokeRect(this.point.x, this.point.y, this.size.width, this.size.height);
+        context.strokeRect(this.rectangle.point.x, this.rectangle.point.y,
+            this.rectangle.size.width, this.rectangle.size.height);
     }
 
 }

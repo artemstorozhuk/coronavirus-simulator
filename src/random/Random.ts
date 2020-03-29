@@ -1,4 +1,5 @@
-import Size from '../element/Size';
+import Rectangle from '../geometry/Rectangle';
+import Size from '../geometry/Size';
 
 export default class Random {
 
@@ -6,14 +7,22 @@ export default class Random {
         return Math.random() * (max - min) - min;
     }
 
-    generatePoint(size: Size) {
+    inSize(size: Size) {
         return {
             x: this.generate(size.width),
             y: this.generate(size.height)
         }
     }
 
-    generateDirection(speed: number) {
+    inRectangle(rectangle: Rectangle) {
+        const corner = rectangle.corner();
+        return {
+            x: this.generate(rectangle.point.x, corner.x),
+            y: this.generate(rectangle.point.y, corner.y)
+        }
+    }
+
+    direction(speed: number) {
         return {
             x: this.generate(-speed, speed),
             y: this.generate(-speed, speed)

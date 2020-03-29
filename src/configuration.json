@@ -1,8 +1,12 @@
 {
+    "gameWidth": 1280,
+    "gameHeight": 720,
+    "canvasX": 10,
+    "canvasY": 10,
     "canvasWidth": 640,
     "canvasHeight": 480,
     "imageSize": 10,
+    "padding": 10,
     "speed": 1,
-    "updatePeriod": 20,
-    "population": 100
+    "updatePeriod": 20
 }

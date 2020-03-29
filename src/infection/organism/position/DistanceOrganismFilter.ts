@@ -1,4 +1,4 @@
-import EuclideDistance from '../../../element/EuclideDistance';
+import EuclideDistance from '../../../geometry/EuclideDistance';
 import OrganismFilter from '../OrganismFilter';
 import PositionedOrganism from './PositionedOrganism';
 

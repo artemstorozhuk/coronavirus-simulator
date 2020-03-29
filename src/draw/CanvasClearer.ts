@@ -1,16 +1,17 @@
-import Size from '../element/Size';
+import Rectangle from '../geometry/Rectangle';
 import Drawer from './Drawer';
 
 export default class CanvasCleaner implements Drawer {
 
-    private readonly size: Size;
+    private readonly rectangle: Rectangle;
 
-    constructor(size: Size) {
-        this.size = size;
+    constructor(rectangle: Rectangle) {
+        this.rectangle = rectangle;
     }
 
     draw(context: CanvasRenderingContext2D) {
-        context.clearRect(0, 0, this.size.width, this.size.height);
+        context.clearRect(this.rectangle.point.x, this.rectangle.point.y,
+            this.rectangle.size.width, this.rectangle.size.height);
     }
 
 }

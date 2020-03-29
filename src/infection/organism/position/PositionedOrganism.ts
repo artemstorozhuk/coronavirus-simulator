@@ -1,4 +1,4 @@
-import Point from '../../../element/Point';
+import Point from '../../../geometry/Point';
 import Organism from '../Organism';
 
 export default class PositionedOrganism implements Organism {
