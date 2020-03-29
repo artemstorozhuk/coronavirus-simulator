@@ -3,6 +3,7 @@ import CompositeDrawer from './draw/CompositeDrawer';
 import Drawer from './draw/Drawer';
 import ImageDrawer from './draw/ImageDrawer';
 import OrganismDrawer from './draw/OrganismDrawer';
+import RectangleDrawer from './draw/RectangleDrawer';
 import DistanceSpreadableCreator from './infection/infectable/creator/DistanceSpreadableCreator';
 import OnlyInfectedCreator from './infection/infectable/creator/OnlyInfectedCreator';
 import Infection from './infection/Infection';
@@ -46,6 +47,9 @@ class App {
 
         const drawersArray = new Array<Drawer>();
         drawersArray.push(new CanvasCleaner(canvasSize));
+        drawersArray.push(new RectangleDrawer({
+            x: 0, y: 0
+        }, canvasSize));
 
         for (let i = 0; i < populationSize; i++) {
             const point = random.generatePoint(fieldSize);
