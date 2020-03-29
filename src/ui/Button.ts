@@ -32,7 +32,7 @@ export default class Button {
         return new CompositeDrawer([rectClearer, rectDrawer, textDrawer]);
     }
 
-    inside(listener: () => void): (event: MouseEvent) => void {
+    insideEvent(listener: () => void): (event: MouseEvent) => void {
         const rectangle = this.rectangle();
         const inside = new RectanglePointInside(rectangle);
         return (event: MouseEvent) => {
