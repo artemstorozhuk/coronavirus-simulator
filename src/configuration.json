@@ -1,13 +1,10 @@
 {
-    "gameWidth": 1280,
-    "gameHeight": 720,
     "canvasX": 10,
     "canvasY": 10,
     "canvasWidth": 640,
     "canvasHeight": 480,
     "imageSize": 10,
-    "infectionDistance": 10,
-    "padding": 10,
-    "speed": 1,
+    "infectionDistance": 20,
+    "speed": 2,
     "updatePeriod": 20
 }

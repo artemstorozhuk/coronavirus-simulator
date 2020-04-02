@@ -1,111 +1,73 @@
 import * as configuration from '../configuration.json';
-import CompositeDrawer from '../draw/CompositeDrawer';
-import Drawer from '../draw/Drawer';
-import ImageDrawer from '../draw/ImageDrawer';
-import OrganismDrawer from '../draw/OrganismDrawer';
-import Rectangle from '../geometry/Rectangle';
-import Random from '../random/Random';
-import CompositeTickable from '../tick/CompositeTickable';
-import Drawable from '../tick/Drawable';
-import InfectionSpreadable from '../tick/InfectionSpreadable';
-import Movable from '../tick/Movable';
-import Tickable from '../tick/Tickable';
-import ImageFactory from '../ui/ImageFactory';
-import DistanceSpreadableCreator from './infectable/creator/DistanceSpreadableCreator';
-import OnlyInfectedCreator from './infectable/creator/OnlyInfectedCreator';
-import Infection from './Infection';
-import Organism from './organism/Organism';
-import PositionedOrganism from './organism/position/PositionedOrganism';
-import SimpleOrganism from './organism/SimpleOrganism';
-import Population from './population/Population';
+import PointImageDrawerCreator from '../core/drawer/creator/PointImageDrawerCreator';
+import IterableDrawer from '../core/drawer/IterableDrawer';
+import RandomPointCreator from '../core/geometry/creator/RandomPointCreator';
+import Point from '../core/geometry/primitive/Point';
+import BrownianMovableCreator from '../core/move/brownian/BrownianMovableCreator';
+import VectorMovableCreator from '../core/move/vector/VectorMovableCreator';
+import CompositeCreatorTickable from '../core/tick/CompositeCreatorTickable';
+import CompositeTickable from '../core/tick/CompositeTickable';
+import DistanceFilterable from '../core/tick/DistanceFilterable';
+import Drawable from '../core/tick/Drawable';
+import Tickable from '../core/tick/Tickable';
+import ImageFactory from '../core/ui/ImageFactory';
 
 export default class InfectionGame implements Tickable {
 
-    private readonly random = new Random();
-
-    private readonly imageSize = {
-        width: configuration.imageSize,
-        height: configuration.imageSize,
-    };
-
-    private readonly imageFactory = new ImageFactory();
-    private readonly happyImage = this.imageFactory.happy();
-    private readonly infectedImage = this.imageFactory.infected();
-
-    private readonly fieldRectangle: Rectangle;
-
-    private readonly organisms = new Array<PositionedOrganism>();
-    private readonly organismDrawers = new Array<Drawer>();
-    private readonly organismMovables = new Array<Movable>();
-
-    private readonly tickable: Tickable;
-
-    constructor(context: CanvasRenderingContext2D) {
-        const canvasPoint = {
+    private readonly fieldRectangle = {
+        point: {
             x: configuration.canvasX,
             y: configuration.canvasY
-        };
-        const canvasSize = {
-            width: configuration.canvasWidth,
-            height: configuration.canvasHeight
-        };
+        },
+        size: {
+            width: configuration.canvasWidth - 2 * configuration.imageSize,
+            height: configuration.canvasHeight - 2 * configuration.imageSize
+        }
+    };
 
-        const fieldSize = {
-            width: canvasSize.width - this.imageSize.width,
-            height: canvasSize.height - this.imageSize.height
+    private readonly randomPointCreator = new RandomPointCreator();
+
+    private readonly mainTickable = new CompositeTickable();
+    private readonly distanceFilterable = new DistanceFilterable(configuration.infectionDistance);
+    private readonly movable: CompositeCreatorTickable<Point>;
+
+    constructor(context: CanvasRenderingContext2D) {
+        const vectorCreator = new VectorMovableCreator(this.fieldRectangle, configuration.speed);
+        const brownianCreator = new BrownianMovableCreator(this.fieldRectangle, configuration.speed);
+
+        this.movable = new CompositeCreatorTickable<Point>(vectorCreator);
+        this.mainTickable.add(this.movable);
+
+        this.mainTickable.add(this.distanceFilterable);
+
+        const imageSize = {
+            width: configuration.imageSize,
+            height: configuration.imageSize
         };
-        this.fieldRectangle = new Rectangle(canvasPoint, fieldSize);
-
-        const population = new Population<PositionedOrganism>(this.organisms);
-        const infectionDistanceSq = configuration.infectionDistance * configuration.infectionDistance;
-        const creator = new OnlyInfectedCreator<PositionedOrganism>(new DistanceSpreadableCreator(infectionDistanceSq));
-        const infection = new Infection<PositionedOrganism>(population, creator);
-
-        this.tickable = new CompositeTickable([new InfectionSpreadable<PositionedOrganism>(infection),
-        new CompositeTickable(this.organismMovables),
-        new Drawable(context, new CompositeDrawer(this.organismDrawers))]);
+        const imageFactory = new ImageFactory();
+        this.mainTickable.add(new Drawable(context, new IterableDrawer<Point>(this.distanceFilterable.valuesIterable(),
+            new PointImageDrawerCreator(imageFactory.happy(), imageSize))));
+        this.mainTickable.add(new Drawable(context, new IterableDrawer<Point>(this.distanceFilterable.filteredIterable(),
+            new PointImageDrawerCreator(imageFactory.infected(), imageSize))));
     }
 
     tick() {
-        this.tickable.tick();
+        this.mainTickable.tick();
     }
 
-    addInfected() {
-        this.addOrganism(new SimpleOrganism(true));
+    addNormal(point: Point = this.randomPointCreator.create(this.fieldRectangle)) {
+        this.movable.add(point);
+        this.distanceFilterable.addValue(point);
     }
 
-    addNormal() {
-        this.addOrganism(new SimpleOrganism());
+    addInfected(point: Point = this.randomPointCreator.create(this.fieldRectangle)) {
+        this.movable.add(point);
+        this.distanceFilterable.addFiltered(point);
     }
 
     reset() {
-        this.organisms.splice(0, this.organisms.length);
-        this.organismDrawers.splice(0, this.organismDrawers.length);
-        this.organismMovables.splice(0, this.organismMovables.length);
-    }
-
-    ingectedCount() {
-        return this.organisms
-            .filter(o => o.isInfected())
-            .length;
-    }
-
-    totalCount() {
-        return this.organisms.length;
-    }
-
-    private addOrganism(organism: Organism) {
-        const point = this.random.inRectangle(this.fieldRectangle);
-
-        const movable = new Movable(point, this.random.direction(configuration.speed), this.fieldRectangle);
-        this.organismMovables.push(movable);
-
-        const normalDrawer = new ImageDrawer(this.happyImage, point, this.imageSize);
-        const infectedDrawer = new ImageDrawer(this.infectedImage, point, this.imageSize);
-
-        this.organismDrawers.push(new OrganismDrawer(organism, normalDrawer, infectedDrawer));
-
-        this.organisms.push(new PositionedOrganism(organism, point));
+        this.distanceFilterable.reset();
+        this.movable.clear();
     }
 
 }
