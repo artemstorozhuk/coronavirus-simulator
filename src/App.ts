@@ -1,11 +1,11 @@
 import * as configuration from './configuration.json';
 import CanvasCleaner from './core/drawer/CanvasClearer';
+import RectangleDrawer from './core/drawer/RectangleDrawer';
 import CompositeTickable from './core/tick/CompositeTickable';
 import Drawable from './core/tick/Drawable';
 import Repeatable from './core/tick/Repeatable';
 import CanvasFactory from './core/ui/CanvasFactory';
 import InfectionGame from './infection/InfectionGame';
-import RectangleDrawer from './core/drawer/RectangleDrawer';
 
 class App {
 

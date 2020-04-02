@@ -1,6 +1,6 @@
 import Creator from '../../creator/Creator';
-import DistanceFilter from './DistanceFilter';
 import Point from '../primitive/Point';
+import DistanceFilter from './DistanceFilter';
 
 export default class DistanceFilterCreator implements Creator<Point, DistanceFilter> {
 

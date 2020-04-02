@@ -1,4 +1,4 @@
-import Size from "../geometry/primitive/Size";
+import Size from '../geometry/primitive/Size';
 
 export default class CanvasFactory {
 

@@ -1,6 +1,6 @@
 import DistanceFilterCreator from '../geometry/filter/DistanceFilterCreator';
-import Point from '../geometry/primitive/Point';
 import Filterable from '../geometry/filter/Filterable';
+import Point from '../geometry/primitive/Point';
 import Tickable from './Tickable';
 
 export default class DistanceFilterable implements Tickable {
