@@ -1,44 +1,39 @@
 import * as configuration from './configuration.json';
-import CanvasCleaner from './core/drawer/CanvasClearer';
-import RectangleDrawer from './core/drawer/RectangleDrawer';
-import CompositeTickable from './core/tick/CompositeTickable';
-import Drawable from './core/tick/Drawable';
 import Repeatable from './core/tick/Repeatable';
 import CanvasFactory from './core/ui/CanvasFactory';
+import InfectionChart from './infection/InfectionChart';
 import InfectionGame from './infection/InfectionGame';
 
 class App {
 
     start() {
-        const canvasSize = {
+        const canvasFactory = new CanvasFactory();
+        const canvas = canvasFactory.canvas("game-canvas", {
             width: configuration.canvasWidth,
             height: configuration.canvasHeight
-        };
-        const gameRectangle = {
-            point: {
-                x: 0,
-                y: 0
-            },
-            size: canvasSize
-        };
-
-        const canvasFactory = new CanvasFactory();
-        const canvas = canvasFactory.create(canvasSize);
+        });
         const context = canvas.getContext("2d");
 
-        const mainTickable = new CompositeTickable();
-        mainTickable.add(new Drawable(context, new CanvasCleaner(gameRectangle)));
-        mainTickable.add(new Drawable(context, new RectangleDrawer(gameRectangle)));
-
         const infectionGame = new InfectionGame(context);
-        mainTickable.add(infectionGame);
+        new Repeatable(infectionGame, configuration.updatePeriod)
+            .tick();
+
+        const chartCanvas = canvasFactory.canvas("chart-canvas", {
+            width: configuration.chartWidth,
+            height: configuration.chartHeight
+        });
+        const chartContext = chartCanvas.getContext("2d");
+
+        const infectionChart = new InfectionChart(chartContext, infectionGame);
+        new Repeatable(infectionChart, configuration.chartUpdatePeriod)
+            .tick();
 
         document.getElementById("add-normal").addEventListener("click", () => infectionGame.addNormal());
         document.getElementById("add-infected").addEventListener("click", () => infectionGame.addInfected());
-        document.getElementById("reset").addEventListener("click", () => infectionGame.reset());
-
-        const repeatable = new Repeatable(mainTickable, configuration.updatePeriod);
-        repeatable.tick();
+        document.getElementById("reset").addEventListener("click", () => {
+            infectionGame.reset();
+            infectionChart.reset();
+        });
     }
 
 }

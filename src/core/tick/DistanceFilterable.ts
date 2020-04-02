@@ -28,6 +28,14 @@ export default class DistanceFilterable implements Tickable {
         this.filterable.reset();
     }
 
+    filteredCount() {
+        return this.filterable.filteredCount();
+    }
+
+    valuesCount() {
+        return this.filterable.valuesCount();
+    }
+
     valuesIterable() {
         return this.filterable.valuesIterable();
     }

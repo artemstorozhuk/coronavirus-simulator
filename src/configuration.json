@@ -1,10 +1,13 @@
 {
-    "canvasX": 10,
-    "canvasY": 10,
     "canvasWidth": 640,
     "canvasHeight": 480,
     "imageSize": 10,
     "infectionDistance": 20,
     "speed": 2,
-    "updatePeriod": 20
+    "updatePeriod": 20,
+
+    "chartWidth": 640,
+    "chartHeight": 480,
+    "barWidth": 10,
+    "chartUpdatePeriod": 1000
 }
