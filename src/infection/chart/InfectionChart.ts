@@ -3,9 +3,9 @@ import CanvasCleaner from '../../core/drawer/CanvasClearer';
 import CompositeTickable from '../../core/tick/CompositeTickable';
 import Drawable from '../../core/tick/Drawable';
 import Tickable from '../../core/tick/Tickable';
+import InfectionGame from '../spread/InfectionSpread';
 import AddInfectedCountTickable from './AddInfectedCountTickable';
 import InfectionChartDrawable from './InfectionChartDrawable';
-import InfectionGame from '../spread/InfectionSpread';
 
 export default class InfectionChart implements Tickable {
 

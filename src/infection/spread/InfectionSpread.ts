@@ -11,8 +11,8 @@ import DistanceFilterable from '../../core/tick/DistanceFilterable';
 import Drawable from '../../core/tick/Drawable';
 import Tickable from '../../core/tick/Tickable';
 import ImageFactory from '../../core/ui/ImageFactory';
-import BrownianMovableCreator from '../move/brownian/BrownianMovableCreator';
-import VectorMovableCreator from '../move/vector/VectorMovableCreator';
+import BrownianMovableCreator from './move/brownian/BrownianMovableCreator';
+import VectorMovableCreator from './move/vector/VectorMovableCreator';
 
 export default class InfectionSpread implements Tickable {
 

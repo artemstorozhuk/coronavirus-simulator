@@ -1,6 +1,6 @@
-import Creator from '../../../core/creator/Creator';
-import Point from '../../../core/geometry/primitive/Point';
-import Rectangle from '../../../core/geometry/primitive/Rectangle';
+import Creator from '../../../../core/creator/Creator';
+import Point from '../../../../core/geometry/primitive/Point';
+import Rectangle from '../../../../core/geometry/primitive/Rectangle';
 import BrownianMovable from './BrownianMovable';
 
 export default class BrownianMovableCreator implements Creator<Point, BrownianMovable> {
