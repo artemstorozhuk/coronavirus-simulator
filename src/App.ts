@@ -1,8 +1,8 @@
 import * as configuration from './configuration.json';
 import Repeatable from './core/tick/Repeatable';
 import CanvasFactory from './core/ui/CanvasFactory';
-import InfectionChart from './infection/InfectionChart';
-import InfectionGame from './infection/InfectionGame';
+import InfectionChart from './infection/chart/InfectionChart';
+import InfectionGame from './infection/spread/InfectionSpread';
 
 class App {
 

@@ -1,9 +1,9 @@
-import PaddingBarCreator from '../chart/bar/PaddingBarCreator';
-import SingleValueBarCreator from '../chart/bar/SingleValueBarCreator';
-import VerticallyReflectedBarCreator from '../chart/bar/VerticallyReflectedBarCreator';
-import ChartDrawer from '../chart/ChartDrawer';
-import Tickable from '../core/tick/Tickable';
-import InfectionGame from './InfectionGame';
+import PaddingBarCreator from '../../chart/bar/PaddingBarCreator';
+import SingleValueBarCreator from '../../chart/bar/SingleValueBarCreator';
+import VerticallyReflectedBarCreator from '../../chart/bar/VerticallyReflectedBarCreator';
+import ChartDrawer from '../../chart/ChartDrawer';
+import Tickable from '../../core/tick/Tickable';
+import InfectionGame from '../spread/InfectionSpread';
 
 export default class InfectionChartDrawable implements Tickable {
 

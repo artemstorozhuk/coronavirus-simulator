@@ -1,5 +1,5 @@
-import Tickable from '../core/tick/Tickable';
-import InfectionGame from './InfectionGame';
+import Tickable from '../../core/tick/Tickable';
+import InfectionGame from '../spread/InfectionSpread';
 
 export default class AddInfectedCountTickable implements Tickable {
 
