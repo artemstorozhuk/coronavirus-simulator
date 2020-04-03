@@ -1,7 +1,7 @@
-import Rectangle from '../../geometry/primitive/Rectangle';
-import Vector from '../../geometry/primitive/Vector';
-import RectangleCorner from '../../geometry/RectangleCorner';
-import Tickable from '../../tick/Tickable';
+import Rectangle from '../../../core/geometry/primitive/Rectangle';
+import Vector from '../../../core/geometry/primitive/Vector';
+import RectangleCorner from '../../../core/geometry/RectangleCorner';
+import Tickable from '../../../core/tick/Tickable';
 
 export default class VectorMovable implements Tickable {
 

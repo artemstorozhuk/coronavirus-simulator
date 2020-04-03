@@ -1,8 +1,8 @@
-import RandomDirectionCreator from '../../geometry/creator/RandomDirectionCreator';
-import Point from '../../geometry/primitive/Point';
-import Rectangle from '../../geometry/primitive/Rectangle';
-import RectangleCorner from '../../geometry/RectangleCorner';
-import Tickable from '../../tick/Tickable';
+import RandomDirectionCreator from '../../../core/geometry/creator/RandomDirectionCreator';
+import Point from '../../../core/geometry/primitive/Point';
+import Rectangle from '../../../core/geometry/primitive/Rectangle';
+import RectangleCorner from '../../../core/geometry/RectangleCorner';
+import Tickable from '../../../core/tick/Tickable';
 
 export default class BrownianMovable implements Tickable {
 

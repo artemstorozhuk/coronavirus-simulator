@@ -5,14 +5,14 @@ import IterableDrawer from '../core/drawer/IterableDrawer';
 import RectangleDrawer from '../core/drawer/RectangleDrawer';
 import RandomPointCreator from '../core/geometry/creator/RandomPointCreator';
 import Point from '../core/geometry/primitive/Point';
-import BrownianMovableCreator from '../core/move/brownian/BrownianMovableCreator';
-import VectorMovableCreator from '../core/move/vector/VectorMovableCreator';
 import CompositeCreatorTickable from '../core/tick/CompositeCreatorTickable';
 import CompositeTickable from '../core/tick/CompositeTickable';
 import DistanceFilterable from '../core/tick/DistanceFilterable';
 import Drawable from '../core/tick/Drawable';
 import Tickable from '../core/tick/Tickable';
 import ImageFactory from '../core/ui/ImageFactory';
+import BrownianMovableCreator from './move/brownian/BrownianMovableCreator';
+import VectorMovableCreator from './move/vector/VectorMovableCreator';
 
 export default class InfectionGame implements Tickable {
 

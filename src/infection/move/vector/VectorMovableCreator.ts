@@ -1,7 +1,7 @@
-import Creator from '../../creator/Creator';
-import RandomDirectionCreator from '../../geometry/creator/RandomDirectionCreator';
-import Point from '../../geometry/primitive/Point';
-import Rectangle from '../../geometry/primitive/Rectangle';
+import Creator from '../../../core/creator/Creator';
+import RandomDirectionCreator from '../../../core/geometry/creator/RandomDirectionCreator';
+import Point from '../../../core/geometry/primitive/Point';
+import Rectangle from '../../../core/geometry/primitive/Rectangle';
 import VectorMovable from './VectorMovable';
 
 export default class VectorMovableCreator implements Creator<Point, VectorMovable> {
